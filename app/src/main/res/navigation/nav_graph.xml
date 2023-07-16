@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/school_list_fragment">
+
+    <fragment
+        android:id="@+id/school_list_fragment"
+        android:name="rcdavis.nycschools.school.SchoolListFragment"
+        android:label="@string/title_school_list"
+        tools:layout="@layout/fragment_school_list">
+        <action
+            android:id="@+id/show_item_detail"
+            app:destination="@id/school_detail_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/school_detail_fragment"
+        android:name="rcdavis.nycschools.school.SchoolDetailFragment"
+        android:label="@string/title_item_detail"
+        tools:layout="@layout/fragment_school_detail">
+
+    </fragment>
+
+</navigation>
