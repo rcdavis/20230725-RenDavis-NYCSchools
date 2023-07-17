@@ -2,8 +2,6 @@ package rcdavis.nycschools.school;
 
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -28,7 +26,12 @@ public class SchoolViewModel extends ViewModel {
         return schoolRepository.getAllSchools()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(schools -> new SchoolUIState(schools, null))
-                .onErrorReturn(throwable -> new SchoolUIState(new ArrayList<>(), throwable));
+                .map(schools -> {
+                    if (schools.isEmpty())
+                        return SchoolUIState.emptyList();
+                    else
+                        return SchoolUIState.fromList(schools);
+                })
+                .onErrorReturn(SchoolUIState::fromError);
     }
 }

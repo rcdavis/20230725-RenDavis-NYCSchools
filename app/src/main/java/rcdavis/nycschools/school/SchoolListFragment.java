@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 
+import java.util.ArrayList;
+
 import rcdavis.nycschools.BaseFragment;
 import rcdavis.nycschools.R;
 import rcdavis.nycschools.databinding.FragmentSchoolListBinding;
@@ -22,6 +24,8 @@ import rcdavis.nycschools.databinding.FragmentSchoolListBinding;
  * item details side-by-side using two vertical panes.
  */
 public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSchoolListBinding> {
+    private SchoolRecyclerViewAdapter adapter;
+
     @Override
     protected Class<SchoolViewModel> getViewModelClass() {
         return SchoolViewModel.class;
@@ -36,14 +40,16 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
 
     @Override
     protected void onInit(Bundle savedInstanceState) {
-        final SchoolRecyclerViewAdapter adapter = new SchoolRecyclerViewAdapter();
+        adapter = new SchoolRecyclerViewAdapter();
         binding.itemList.setAdapter(adapter);
 
         addDisposable(viewModel.getUIState().subscribe(uiState -> {
-            if (uiState.getError() != null) {
-                onError(uiState.getError());
-            } else {
-                adapter.setItems(uiState.getSchools());
+            if (uiState instanceof SchoolErrorUIState) {
+                onError((SchoolErrorUIState) uiState);
+            } else if (uiState instanceof SchoolListUIState) {
+                onSchoolList((SchoolListUIState) uiState);
+            } else if (uiState instanceof SchoolEmptyListUIState) {
+                onEmptyList((SchoolEmptyListUIState) uiState);
             }
         }));
 
@@ -61,9 +67,19 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         }
     }
 
-    private void onError(@NonNull final Throwable error) {
-        error.printStackTrace();
-        Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+    private void onSchoolList(@NonNull final SchoolListUIState uiState) {
+        adapter.setItems(uiState.getSchools());
+    }
+
+    private void onEmptyList(final SchoolEmptyListUIState uiState) {
+        adapter.setItems(new ArrayList<>());
+        Toast.makeText(getContext(), "No schools returned", Toast.LENGTH_LONG).show();
+    }
+
+    private void onError(@NonNull final SchoolErrorUIState uiState) {
+        uiState.getError().printStackTrace();
+        Toast.makeText(getContext(), uiState.getError().getLocalizedMessage(), Toast.LENGTH_LONG)
+                .show();
         // TODO: Display error in UI
     }
 }
