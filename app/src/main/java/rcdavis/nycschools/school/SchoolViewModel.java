@@ -2,6 +2,7 @@ package rcdavis.nycschools.school;
 
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -27,6 +28,7 @@ public class SchoolViewModel extends ViewModel {
     public Observable<List<School>> getAllSchools() {
         return schoolRepository.getAllSchools()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeWith(Observable.just(new ArrayList<>()));
     }
 }
