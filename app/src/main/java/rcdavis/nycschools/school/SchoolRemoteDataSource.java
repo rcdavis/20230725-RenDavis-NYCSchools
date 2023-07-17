@@ -22,6 +22,7 @@ public class SchoolRemoteDataSource {
         );
     }
 
+    @NonNull
     private List<School> zipDTOLists(
             final List<SchoolDTO> schoolDTOs, final List<SchoolSATDTO> satDTOs
     ) {

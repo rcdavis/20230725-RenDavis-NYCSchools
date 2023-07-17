@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -38,8 +39,13 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         final SchoolRecyclerViewAdapter adapter = new SchoolRecyclerViewAdapter();
         binding.itemList.setAdapter(adapter);
 
-        addDisposable(viewModel.getAllSchools()
-                .subscribe(adapter::setItems));
+        addDisposable(viewModel.getUIState().subscribe(uiState -> {
+            if (uiState.getError() != null) {
+                onError(uiState.getError());
+            } else {
+                adapter.setItems(uiState.getSchools());
+            }
+        }));
 
         adapter.onViewClicked()
                 .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
@@ -53,5 +59,11 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         } else {
             Navigation.findNavController(view).navigate(R.id.show_item_detail);
         }
+    }
+
+    private void onError(@NonNull final Throwable error) {
+        error.printStackTrace();
+        Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        // TODO: Display error in UI
     }
 }
