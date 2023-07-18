@@ -27,7 +27,7 @@ public class SchoolRemoteDataSource {
             final List<SchoolDTO> schoolDTOs, final List<SchoolSATDTO> satDTOs
     ) {
         try {
-            return CollectionUtils.zipLists(schoolDTOs, satDTOs, this::hasSameId, School::from);
+            return CollectionUtils.zip(schoolDTOs, satDTOs, this::hasSameId, School::from);
         } catch (final Throwable e) {
             e.printStackTrace();
         }
