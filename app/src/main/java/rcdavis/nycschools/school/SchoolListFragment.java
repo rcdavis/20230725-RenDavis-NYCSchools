@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
@@ -73,13 +72,11 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
 
     private void onEmptyList(final SchoolEmptyListUIState uiState) {
         adapter.setItems(new ArrayList<>());
-        Toast.makeText(getContext(), "No schools returned", Toast.LENGTH_LONG).show();
+        displayInfoDialog("No schools returned");
     }
 
     private void onError(@NonNull final SchoolErrorUIState uiState) {
         uiState.getError().printStackTrace();
-        Toast.makeText(getContext(), uiState.getError().getLocalizedMessage(), Toast.LENGTH_LONG)
-                .show();
-        // TODO: Display error in UI
+        displayErrorDialog(uiState.getError().getLocalizedMessage());
     }
 }
