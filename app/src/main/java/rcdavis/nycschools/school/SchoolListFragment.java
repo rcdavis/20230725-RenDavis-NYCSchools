@@ -45,8 +45,8 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         fetchUIState();
         setupSwipeToRefresh();
 
-        adapter.onViewClicked()
-                .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
+        adapter.onViewClicked().subscribe(clickedView ->
+                onClickView(clickedView.getView(), clickedView.getItem()));
     }
 
     private void onClickView(final View view, final School school) {
