@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 
+import java.util.ArrayList;
+
 import rcdavis.nycschools.BaseFragment;
 import rcdavis.nycschools.R;
 import rcdavis.nycschools.databinding.FragmentSchoolListBinding;
@@ -21,6 +23,8 @@ import rcdavis.nycschools.databinding.FragmentSchoolListBinding;
  * item details side-by-side using two vertical panes.
  */
 public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSchoolListBinding> {
+    private SchoolRecyclerViewAdapter adapter;
+
     @Override
     protected Class<SchoolViewModel> getViewModelClass() {
         return SchoolViewModel.class;
@@ -35,11 +39,20 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
 
     @Override
     protected void onInit(Bundle savedInstanceState) {
-        final SchoolRecyclerViewAdapter adapter = new SchoolRecyclerViewAdapter();
+        adapter = new SchoolRecyclerViewAdapter();
         binding.itemList.setAdapter(adapter);
 
-        addDisposable(viewModel.getAllSchools()
-                .subscribe(adapter::setItems));
+        addDisposable(viewModel.getUIState().subscribe(uiState -> {
+            if (uiState instanceof SchoolLoadingUIState) {
+                onLoadingList((SchoolLoadingUIState) uiState);
+            } else if (uiState instanceof SchoolErrorUIState) {
+                onError((SchoolErrorUIState) uiState);
+            } else if (uiState instanceof SchoolListUIState) {
+                onSchoolList((SchoolListUIState) uiState);
+            } else if (uiState instanceof SchoolEmptyListUIState) {
+                onEmptyList((SchoolEmptyListUIState) uiState);
+            }
+        }));
 
         adapter.onViewClicked()
                 .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
@@ -53,5 +66,27 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         } else {
             Navigation.findNavController(view).navigate(R.id.show_item_detail);
         }
+    }
+
+    private void onLoadingList(final SchoolLoadingUIState uiState) {
+        binding.msgText.setText(R.string.loading_schools);
+        binding.msgText.setVisibility(View.VISIBLE);
+    }
+
+    private void onSchoolList(@NonNull final SchoolListUIState uiState) {
+        binding.msgText.setVisibility(View.GONE);
+        adapter.setItems(uiState.getSchools());
+    }
+
+    private void onEmptyList(final SchoolEmptyListUIState uiState) {
+        binding.msgText.setText(R.string.empty_schools_list);
+        binding.msgText.setVisibility(View.VISIBLE);
+        adapter.setItems(new ArrayList<>());
+    }
+
+    private void onError(@NonNull final SchoolErrorUIState uiState) {
+        binding.msgText.setText(uiState.getError().getLocalizedMessage());
+        binding.msgText.setVisibility(View.VISIBLE);
+        uiState.getError().printStackTrace();
     }
 }
