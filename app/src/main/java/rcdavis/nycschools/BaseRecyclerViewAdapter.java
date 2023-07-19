@@ -78,6 +78,12 @@ public abstract class BaseRecyclerViewAdapter<T, B extends ViewBinding>
         notifyDataSetChanged();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void clearItems() {
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
     static protected class ViewHolder<B extends ViewBinding> extends RecyclerView.ViewHolder {
         public final B binding;
 
