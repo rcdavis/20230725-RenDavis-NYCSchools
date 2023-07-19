@@ -43,7 +43,9 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         binding.itemList.setAdapter(adapter);
 
         addDisposable(viewModel.getUIState().subscribe(uiState -> {
-            if (uiState instanceof SchoolErrorUIState) {
+            if (uiState instanceof SchoolLoadingUIState) {
+                onLoadingList((SchoolLoadingUIState) uiState);
+            } else if (uiState instanceof SchoolErrorUIState) {
                 onError((SchoolErrorUIState) uiState);
             } else if (uiState instanceof SchoolListUIState) {
                 onSchoolList((SchoolListUIState) uiState);
@@ -66,17 +68,25 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         }
     }
 
+    private void onLoadingList(final SchoolLoadingUIState uiState) {
+        binding.msgText.setText(R.string.loading_schools);
+        binding.msgText.setVisibility(View.VISIBLE);
+    }
+
     private void onSchoolList(@NonNull final SchoolListUIState uiState) {
+        binding.msgText.setVisibility(View.GONE);
         adapter.setItems(uiState.getSchools());
     }
 
     private void onEmptyList(final SchoolEmptyListUIState uiState) {
+        binding.msgText.setText(R.string.empty_schools_list);
+        binding.msgText.setVisibility(View.VISIBLE);
         adapter.setItems(new ArrayList<>());
-        displayInfoDialog("No schools returned");
     }
 
     private void onError(@NonNull final SchoolErrorUIState uiState) {
+        binding.msgText.setText(uiState.getError().getLocalizedMessage());
+        binding.msgText.setVisibility(View.VISIBLE);
         uiState.getError().printStackTrace();
-        displayErrorDialog(uiState.getError().getLocalizedMessage());
     }
 }

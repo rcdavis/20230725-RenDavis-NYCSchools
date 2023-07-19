@@ -5,6 +5,9 @@
     <string name="error">Error</string>
     <string name="info">Info</string>
 
+    <string name="loading_schools">Loading Schools…</string>
+    <string name="empty_schools_list">No Schools Returned</string>
+
     <string name="title_school_list">NYC Schools</string>
     <string name="title_school_detail">School Details</string>
     <string name="title_sat_scores">SAT Scores</string>

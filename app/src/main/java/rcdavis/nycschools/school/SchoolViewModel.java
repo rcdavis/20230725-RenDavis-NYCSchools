@@ -32,6 +32,7 @@ public class SchoolViewModel extends ViewModel {
                     else
                         return SchoolUIState.fromList(schools);
                 })
+                .startWithItem(SchoolUIState.loading())
                 .onErrorReturn(SchoolUIState::fromError);
     }
 }

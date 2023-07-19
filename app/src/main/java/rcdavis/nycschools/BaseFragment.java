@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -61,22 +60,4 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
     protected abstract B createViewBinding(@NonNull LayoutInflater inflater, ViewGroup container);
 
     protected abstract void onInit(Bundle savedInstanceState);
-
-    protected void displayInfoDialog(final String message) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.info)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
-
-    protected void displayErrorDialog(final String message) {
-        new AlertDialog.Builder(requireContext())
-                .setTitle(R.string.error)
-                .setIcon(android.R.drawable.stat_notify_error)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
-    }
 }
