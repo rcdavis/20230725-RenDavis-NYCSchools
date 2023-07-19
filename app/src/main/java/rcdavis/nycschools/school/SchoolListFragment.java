@@ -42,17 +42,8 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         adapter = new SchoolRecyclerViewAdapter();
         binding.itemList.setAdapter(adapter);
 
-        addDisposable(viewModel.getUIState().subscribe(uiState -> {
-            if (uiState instanceof SchoolLoadingUIState) {
-                onLoadingList((SchoolLoadingUIState) uiState);
-            } else if (uiState instanceof SchoolErrorUIState) {
-                onError((SchoolErrorUIState) uiState);
-            } else if (uiState instanceof SchoolListUIState) {
-                onSchoolList((SchoolListUIState) uiState);
-            } else if (uiState instanceof SchoolEmptyListUIState) {
-                onEmptyList((SchoolEmptyListUIState) uiState);
-            }
-        }));
+        fetchUIState();
+        setupSwipeToRefresh();
 
         adapter.onViewClicked()
                 .subscribe(clickedView -> onClickView(clickedView.view, clickedView.item));
@@ -88,5 +79,36 @@ public class SchoolListFragment extends BaseFragment<SchoolViewModel, FragmentSc
         binding.msgText.setText(uiState.getError().getLocalizedMessage());
         binding.msgText.setVisibility(View.VISIBLE);
         uiState.getError().printStackTrace();
+    }
+
+    private void fetchUIState() {
+        addDisposable(viewModel.getUIState().subscribe(uiState -> {
+            if (uiState instanceof SchoolLoadingUIState) {
+                onLoadingList((SchoolLoadingUIState) uiState);
+                return;
+            }
+
+            if (uiState instanceof SchoolErrorUIState) {
+                onError((SchoolErrorUIState) uiState);
+            } else if (uiState instanceof SchoolListUIState) {
+                onSchoolList((SchoolListUIState) uiState);
+            } else if (uiState instanceof SchoolEmptyListUIState) {
+                onEmptyList((SchoolEmptyListUIState) uiState);
+            }
+            binding.swipeContainer.setRefreshing(false);
+        }));
+    }
+
+    private void setupSwipeToRefresh() {
+        binding.swipeContainer.setOnRefreshListener(() -> {
+            adapter.clearItems();
+            fetchUIState();
+        });
+        binding.swipeContainer.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        );
     }
 }
