@@ -9,7 +9,9 @@ object MockData {
         primaryAddressLine1 = "220 Henry Street",
         city = "Manhattan",
         zip = 10002,
-        stateCode = "NY"
+        stateCode = "NY",
+        latitude = 0.0,
+        longitude = 0.0
     )
 
     @JvmStatic fun getSATScores() = SATScores(
@@ -41,7 +43,9 @@ object MockData {
                 primaryAddressLine1 = "200 Monroe Street",
                 city = "Manhattan",
                 zip = 10002,
-                stateCode = "NY"
+                stateCode = "NY",
+                latitude = 0.0,
+                longitude = 0.0
             ),
             satScores = SATScores(
                 id = "01M448",

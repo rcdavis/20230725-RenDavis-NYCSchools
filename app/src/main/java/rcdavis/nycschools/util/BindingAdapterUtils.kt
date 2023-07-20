@@ -7,9 +7,7 @@ import rcdavis.nycschools.school.Address
 object BindingAdapterUtils {
     @BindingAdapter("text")
     @JvmStatic fun setText(textView: TextView, address: Address) {
-        val text = address.primaryAddressLine1 + ",\n" + address.city + ", " +
-                address.stateCode + " " + address.zip
-        textView.text = text
+        textView.text = address.toString()
     }
 
     @BindingAdapter("phoneNumber")

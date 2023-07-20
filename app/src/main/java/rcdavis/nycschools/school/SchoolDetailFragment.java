@@ -32,7 +32,10 @@ public class SchoolDetailFragment
                     e.printStackTrace();
                     return MockData.getSchools().get(0);
                 })
-                .subscribe(school -> binding.setSchool(school)));
+                .subscribe(school -> {
+                    binding.setSchool(school);
+                    binding.address.setOnClickListener(v -> launchMapApp(school.getAddress()));
+                }));
     }
 
     @Override

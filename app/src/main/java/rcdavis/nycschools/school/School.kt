@@ -30,7 +30,9 @@ data class School(
                     primaryAddressLine1 = dto.primaryAddressLine1,
                     city = dto.city,
                     zip = dto.zip,
-                    stateCode = dto.stateCode
+                    stateCode = dto.stateCode,
+                    latitude = dto.latitude,
+                    longitude = dto.longitude
                 ),
                 satScores = SATScores(
                     id = dto.id,
