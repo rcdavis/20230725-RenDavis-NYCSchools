@@ -7,9 +7,19 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SchoolViewModel extends ViewModel {
-    private final SchoolRepository schoolRepository = new SchoolRepository();
+    private final SchoolRepository schoolRepository;
 
     private School selectedSchool;
+
+    public SchoolViewModel() {
+        schoolRepository = new SchoolRepository();
+        selectedSchool = null;
+    }
+
+    public SchoolViewModel(final SchoolRepository repository) {
+        schoolRepository = repository;
+        selectedSchool = null;
+    }
 
     public void updateSelectedSchool(final School school) {
         selectedSchool = school;

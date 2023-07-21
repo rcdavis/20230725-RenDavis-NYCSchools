@@ -12,12 +12,20 @@ import rcdavis.nycschools.util.CollectionUtils;
 import rcdavis.nycschools.util.RetrofitUtils;
 
 public class SchoolRemoteDataSource {
-    private final SchoolAPI mSchoolApi = RetrofitUtils.createSchoolApi();
+    private final SchoolAPI schoolApi;
+
+    public SchoolRemoteDataSource() {
+        schoolApi = RetrofitUtils.createSchoolApi();
+    }
+
+    public SchoolRemoteDataSource(final SchoolAPI schoolApi) {
+        this.schoolApi = schoolApi;
+    }
 
     public Observable<List<School>> getAllSchools() {
         return Observable.zip(
-                mSchoolApi.getAllSchools(),
-                mSchoolApi.getAllSATScores(),
+                schoolApi.getAllSchools(),
+                schoolApi.getAllSATScores(),
                 this::zipDTOLists
         );
     }
