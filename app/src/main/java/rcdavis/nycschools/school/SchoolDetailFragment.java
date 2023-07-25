@@ -30,7 +30,7 @@ public class SchoolDetailFragment
         addDisposable(viewModel.getSelectedSchool()
                 .onErrorReturn(e -> {
                     e.printStackTrace();
-                    return MockData.getSchools().get(0);
+                    return MockData.getMockSchool();
                 })
                 .subscribe(school -> binding.setSchool(school)));
     }

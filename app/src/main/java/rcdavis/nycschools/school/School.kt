@@ -33,8 +33,8 @@ data class School(
                     stateCode = dto.stateCode
                 ),
                 satScores = SATScores(
-                    id = dto.id,
-                    name = dto.name,
+                    id = satDTO.id,
+                    name = satDTO.name,
                     numSATTestTakers = numSATTestTakers,
                     averageSATCriticalReadingScore = avgSATCriticalReadingScore,
                     averageSATMathScore = avgSATMathScore,
