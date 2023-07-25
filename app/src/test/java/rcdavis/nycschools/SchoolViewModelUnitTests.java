@@ -2,8 +2,6 @@ package rcdavis.nycschools;
 
 import static org.mockito.Mockito.when;
 
-import android.util.Log;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
