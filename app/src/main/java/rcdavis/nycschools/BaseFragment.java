@@ -18,10 +18,10 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
     protected V viewModel;
     protected B binding;
 
-    private final CompositeDisposable mDisposables = new CompositeDisposable();
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     protected void addDisposable(final Disposable disposable) {
-        mDisposables.add(disposable);
+        disposables.add(disposable);
     }
 
     @Override
@@ -45,14 +45,14 @@ public abstract class BaseFragment<V extends ViewModel, B extends ViewBinding> e
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mDisposables.clear();
+        disposables.clear();
         binding = null;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDisposables.dispose();
+        disposables.dispose();
     }
 
     protected abstract Class<V> getViewModelClass();

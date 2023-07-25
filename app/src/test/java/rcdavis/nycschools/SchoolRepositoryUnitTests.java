@@ -60,7 +60,8 @@ public class SchoolRepositoryUnitTests {
     @Test
     public void whenLocalSchoolsNotEmpty_ThenReturnLocal() {
         final List<School> schools = TestUtils.createMockSchoolsList();
-        when(schoolLocalDataSource.getAllSchools()).thenReturn(Observable.just(schools));
+        when(schoolLocalDataSource.getAllSchools())
+                .thenReturn(Observable.just(schools));
 
         final TestObserver<List<School>> testObserver = schoolRepository.getAllSchools().test();
         testObserver.assertResult(schools);
