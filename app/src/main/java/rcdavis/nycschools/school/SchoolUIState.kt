@@ -10,6 +10,6 @@ sealed interface SchoolUIState {
 }
 
 object SchoolLoadingUIState : SchoolUIState
-class SchoolListUIState(val schools: List<School>): SchoolUIState
+data class SchoolListUIState(val schools: List<School>): SchoolUIState
 object SchoolEmptyListUIState : SchoolUIState
-class SchoolErrorUIState(val error: Throwable): SchoolUIState
+data class SchoolErrorUIState(val error: Throwable): SchoolUIState

@@ -26,7 +26,7 @@ public class SchoolRepositoryUnitTests {
     @Mock private SchoolAPI schoolApi;
 
     @Before
-    public void setup() {
+    public void beforeEachTest() {
         try (final AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
             schoolRepository = new SchoolRepository(
                     schoolLocalDataSource,
